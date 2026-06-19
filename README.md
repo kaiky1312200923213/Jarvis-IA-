@@ -1,1 +1,83 @@
 # Jarvis-IA-
+import pyautogui
+import time
+
+from agno.agent import Agent
+from agno.models.openai import OpenAIChat
+
+API_KEY = ""
+
+
+#CRIAR UM ELEMENTO DE SEGURANÇA
+pyautogui.PAUSE = 0.5
+
+def clicar(x:int,y:int) -> str:
+    pyautogui.click(x,y)
+    return f"Cliquei em ({x},{y})"
+
+def escrever(texto:str) -> str:
+    pyautogui.write(texto,interval=0.05)
+    return f"Escrevi:{texto}"
+
+def abrir_camera() -> str:
+    pyautogui.press("win")
+    time.sleep(1)
+
+    pyautogui.write("Câmera")
+    time.sleep(3)
+
+    return "Camera Aberta"
+
+def tirar_foto() -> str:
+    pyautogui.press("space")
+    time.sleep(2)
+    return "Foto capturada"
+
+def abrir_bloconotas() -> str:
+    pyautogui.press("win")
+    time.sleep(1)
+
+    pyautogui.write("Bloco de Notas")
+    time.sleep(1)
+
+    pyautogui.press("enter")
+    time.sleep(2)
+
+    return "Bloco de Notas Aberto"
+
+def print_tela() -> str:
+    pyautogui.screenshot("tela.png")
+    return "Screenshot tela salva como tela.png"
+
+jarvis = Agent(
+    model=OpenAIChat(
+        id="meta/llama-3.1-8b-instruct",
+        api_key=API_KEY,
+        base_url="https://integrate.api.nvidia.com/v1"
+
+    ),
+    instructions="""
+    Voce é um assistente virtual estilo Jarvis,
+    Voce controla o computador usando ferramentas,
+    seja objetivo e execute ações com segurança.
+    """,
+    tools=[
+        clicar,
+        escrever,
+        abrir_bloconotas,
+        print_tela,
+        abrir_camera,
+        tirar_foto
+    ],
+    markdown=True
+
+)
+
+jarvis.print_response(
+    """Abra o bloco de notas, escreva:
+    'Ola, eu sou Jarvis seu amigo virtual'
+    Depois tire um print da tela.
+    Abra a camera doe windows e tire um foto.
+    """,
+    stream=True
+)
