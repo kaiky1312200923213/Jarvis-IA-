@@ -1,4 +1,4 @@
-# Jarvis-IA-
+# jarvis-ia
 import pyautogui
 import time
 
