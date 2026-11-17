@@ -1,83 +1,30 @@
-# jarvis-ia
-import pyautogui
-import time
+# Jarvis IA — Automação de Desktop
 
-from agno.agent import Agent
-from agno.models.openai import OpenAIChat
+**Autor:** Kaiky Yoshio Ono Marins  
+**Categoria:** Python · Agentes de IA · Automação  
+**Status:** Protótipo experimental
 
-API_KEY = ""
+## Visão geral
 
+Experimento de assistente virtual que combina um agente de IA com automação de desktop. O código demonstra funções para clicar, digitar texto, abrir aplicativos do Windows, iniciar a câmera e salvar uma captura de tela.
 
-#CRIAR UM ELEMENTO DE SEGURANÇA
-pyautogui.PAUSE = 0.5
+## Ações demonstradas
 
-def clicar(x:int,y:int) -> str:
-    pyautogui.click(x,y)
-    return f"Cliquei em ({x},{y})"
+- Automação de mouse e teclado com PyAutoGUI.
+- Abertura do Bloco de Notas e da aplicação Câmera.
+- Captura de tela local.
+- Encaminhamento de tarefas ao agente por meio de ferramentas Python.
 
-def escrever(texto:str) -> str:
-    pyautogui.write(texto,interval=0.05)
-    return f"Escrevi:{texto}"
+## Tecnologias
 
-def abrir_camera() -> str:
-    pyautogui.press("win")
-    time.sleep(1)
+- Python
+- PyAutoGUI
+- Agno
+- SDK compatível com OpenAI
+- NVIDIA NIM
 
-    pyautogui.write("Câmera")
-    time.sleep(3)
+## Segurança e execução
 
-    return "Camera Aberta"
+O código original está em [MATERIAL-ORIGINAL.txt](./MATERIAL-ORIGINAL.txt). Execute apenas em um computador de teste ou ambiente controlado, com atenção às ações solicitadas: automação pode clicar, digitar e acessar dispositivos locais. Revise as ferramentas habilitadas antes de permitir qualquer ação automatizada.
 
-def tirar_foto() -> str:
-    pyautogui.press("space")
-    time.sleep(2)
-    return "Foto capturada"
-
-def abrir_bloconotas() -> str:
-    pyautogui.press("win")
-    time.sleep(1)
-
-    pyautogui.write("Bloco de Notas")
-    time.sleep(1)
-
-    pyautogui.press("enter")
-    time.sleep(2)
-
-    return "Bloco de Notas Aberto"
-
-def print_tela() -> str:
-    pyautogui.screenshot("tela.png")
-    return "Screenshot tela salva como tela.png"
-
-jarvis = Agent(
-    model=OpenAIChat(
-        id="meta/llama-3.1-8b-instruct",
-        api_key=API_KEY,
-        base_url="https://integrate.api.nvidia.com/v1"
-
-    ),
-    instructions="""
-    Voce é um assistente virtual estilo Jarvis,
-    Voce controla o computador usando ferramentas,
-    seja objetivo e execute ações com segurança.
-    """,
-    tools=[
-        clicar,
-        escrever,
-        abrir_bloconotas,
-        print_tela,
-        abrir_camera,
-        tirar_foto
-    ],
-    markdown=True
-
-)
-
-jarvis.print_response(
-    """Abra o bloco de notas, escreva:
-    'Ola, eu sou Jarvis seu amigo virtual'
-    Depois tire um print da tela.
-    Abra a camera doe windows e tire um foto.
-    """,
-    stream=True
-)
+© 2026 Kaiky Yoshio Ono Marins.
